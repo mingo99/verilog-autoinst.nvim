@@ -1,5 +1,5 @@
 <h1 align="center">
-    autoverilog.nvim
+    verilog-autoinst.nvim
 </h1>
 
 <p align="center">
@@ -20,18 +20,23 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim) in lua
 ```lua
  {
   "mingo99/verilog-autoinst.nvim",
-  event = "VeryLazy",
   cmd = "AutoInst",
   keys = { { "<leader>fv", "<cmd>AutoInst<cr>", desc = "Automatic instantiation for verilog" } },
   dependencies = { "nvim-telescope/telescope.nvim" },
-  opts = {
-   cmd = "AutoInst",
-  },
  },
 
 ```
 
-When you want to instantiate a module, run the command `AutoInst`. And you can map the key to others.
+You can register command name that you like, but you need to modify command in keys for lazy-load.
+
+```lua
+ {
+  opts = {
+   cmd = "UserComamndName",
+  },
+ },
+
+```
 
 ## Features
 

@@ -98,10 +98,11 @@ local function auto_instantiation(args)
 end
 
 local autoinst = {}
-local function setup(opt)
-	autoinst = vim.tbl_extend("force", {
-		cmd = "AutoInst",
-	}, opt or {})
+local function setup(userOpts)
+	local defaultOpts = { cmd = "AutoInst" }
+	for key, value in pairs(defaultOpts) do
+		autoinst[key] = userOpts[key] ~= "" and userOpts[key] or value
+	end
 
 	vim.api.nvim_create_user_command(autoinst.cmd, function(opts)
 		auto_instantiation(opts.args)
