@@ -1,5 +1,7 @@
 local M = {}
 
+M.root_patterns = { ".git", "lua" }
+
 -- returns the root directory based on:
 -- * lsp workspace folders
 -- * lsp root_dir
@@ -42,6 +44,33 @@ function M.get_root()
 	end
 	---@cast root string
 	return root
+end
+
+function M.is_not_root_pattern(path)
+	return string.match(path, "^.")
+		or string.match(path, "^~")
+		or string.match(path, "^/")
+		or string.match(path, "^[A-Za-z]:\\")
+end
+
+function M.telescope(fn_inst)
+	local builtin = "find_files"
+	local root = M.get_root()
+	local opts = {
+		cwd = root,
+		find_command = { "rg", "-tverilog", "--color", "never", "--files" },
+		attach_mappings = function(prompt_bufnr)
+			local actions = require("telescope.actions")
+			local action_state = require("telescope.actions.state")
+			actions.select_default:replace(function()
+				actions.close(prompt_bufnr)
+				local selection = action_state.get_selected_entry()
+				fn_inst(selection[1])
+			end)
+			return true
+		end,
+	}
+	require("telescope.builtin")[builtin](opts)
 end
 
 return M

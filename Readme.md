@@ -18,14 +18,14 @@
 Using [lazy.nvim](https://github.com/folke/lazy.nvim) in lua
 
 ```lua
-	{
-		"mingo99/autoverilog.nvim",
-		cmd = "AutoInst",
-		dependencies = { "nvim-telescope/telescope.nvim" },
-		keys = {
-			{ "<leader>fv", "<cmd>AutoInst<cr>", desc = "Automatic instantiation for verilog" },
-		},
-	},
+ {
+  "mingo99/verilog-autoinst.nvim",
+  dependencies = { "nvim-telescope/telescope.nvim" },
+  opts = {
+   cmd = "AutoInst",
+   map = "<leader>fv"
+  },
+ },
 
 ```
 

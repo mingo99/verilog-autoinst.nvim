@@ -1,9 +1,8 @@
-local Util = require("autoverilog.util")
+vim.o.runtimepath = vim.o.runtimepath .. "," .. vim.fn.getcwd()
+local Util = require("autoinst.util")
 
-local M = {}
-
-function M.extract(cmd)
-	local f = assert(io.open(cmd, "r"))
+local function extract(path)
+	local f = assert(io.open(path, "r"))
 	local s = assert(f:read("*a"))
 
 	-- Extract module head
@@ -47,7 +46,7 @@ function M.extract(cmd)
 	return { module_name, params, ports }
 end
 
-function M.geninst(module_name, params, ports)
+local function geninst(module_name, params, ports)
 	local inst_code = ""
 	if #params > 0 then
 		inst_code = inst_code .. module_name .. " #("
@@ -73,26 +72,44 @@ function M.geninst(module_name, params, ports)
 	return inst_code
 end
 
-function M.autoinst()
-	local builtin = "find_files"
-	local root = Util.get_root()
-	local opts = {
-		cwd = root,
-		find_command = { "rg", "-tverilog", "--color", "never", "--files" },
-		attach_mappings = function(prompt_bufnr)
-			local actions = require("telescope.actions")
-			local action_state = require("telescope.actions.state")
-			actions.select_default:replace(function()
-				actions.close(prompt_bufnr)
-				local selection = action_state.get_selected_entry()
-				local module = M.extract(root .. "/" .. selection[1])
-				local inst_code = M.geninst(module[1], module[2], module[3])
-				vim.api.nvim_put({ inst_code }, "", false, true)
-			end)
-			return true
-		end,
-	}
-	require("telescope.builtin")[builtin](opts)
+local function inst_with_path(path)
+	local full_path = ""
+	if Util.is_not_root_pattern(path) then
+		full_path = path
+	else
+		local root = Util.get_root()
+		full_path = root .. "/" .. path
+	end
+	local module = extract(full_path)
+	local inst_code = geninst(module[1], module[2], module[3])
+	vim.api.nvim_put({ inst_code }, "", false, true)
 end
 
-return M
+local function inst_with_telescope()
+	Util.telescope(inst_with_path)
+end
+
+local function auto_instantiation(args)
+	if args == "" then
+		inst_with_telescope()
+	else
+		inst_with_path(args)
+	end
+end
+
+local autoinst = {}
+local function setup(opt)
+	autoinst = vim.tbl_extend("force", {
+		cmd = "AutoInst",
+		map = "<leader>fv",
+	}, opt or {})
+
+	vim.keymap.set({ "n", "i" }, autoinst.map, auto_instantiation, { desc = "Auto instantiation verilog module" })
+	vim.api.nvim_create_user_command(autoinst.cmd, function(opts)
+		auto_instantiation(opts.args)
+	end, { nargs = "?" })
+end
+
+return {
+	setup = setup,
+}
