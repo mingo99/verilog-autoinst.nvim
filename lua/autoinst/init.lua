@@ -104,7 +104,7 @@ local function setup(opt)
 		map = "<leader>fv",
 	}, opt or {})
 
-	vim.keymap.set({ "n", "i" }, autoinst.map, auto_instantiation, { desc = "Auto instantiation verilog module" })
+	vim.keymap.set({ "n", "i" }, autoinst.map, inst_with_telescope, { desc = "Auto instantiation verilog module" })
 	vim.api.nvim_create_user_command(autoinst.cmd, function(opts)
 		auto_instantiation(opts.args)
 	end, { nargs = "?" })
