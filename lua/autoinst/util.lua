@@ -47,10 +47,7 @@ function M.get_root()
 end
 
 function M.is_not_root_pattern(path)
-	return string.match(path, "^.")
-		or string.match(path, "^~")
-		or string.match(path, "^/")
-		or string.match(path, "^[A-Za-z]:\\")
+	return string.match(path, "^/") or string.match(path, "^[A-Za-z]:\\")
 end
 
 function M.telescope(fn_inst)

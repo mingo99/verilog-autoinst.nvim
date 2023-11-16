@@ -101,10 +101,8 @@ local autoinst = {}
 local function setup(opt)
 	autoinst = vim.tbl_extend("force", {
 		cmd = "AutoInst",
-		map = "<leader>fv",
 	}, opt or {})
 
-	vim.keymap.set({ "n", "i" }, autoinst.map, inst_with_telescope, { desc = "Auto instantiation verilog module" })
 	vim.api.nvim_create_user_command(autoinst.cmd, function(opts)
 		auto_instantiation(opts.args)
 	end, { nargs = "?" })

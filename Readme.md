@@ -20,10 +20,12 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim) in lua
 ```lua
  {
   "mingo99/verilog-autoinst.nvim",
+  event = "VeryLazy",
+  cmd = "AutoInst",
+  keys = { { "<leader>fv", "<cmd>AutoInst<cr>", desc = "Automatic instantiation for verilog" } },
   dependencies = { "nvim-telescope/telescope.nvim" },
   opts = {
    cmd = "AutoInst",
-   map = "<leader>fv"
   },
  },
 
