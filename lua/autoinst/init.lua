@@ -1,4 +1,3 @@
-vim.o.runtimepath = vim.o.runtimepath .. "," .. vim.fn.getcwd()
 local Util = require("autoinst.util")
 
 local function extract(path)
@@ -98,8 +97,9 @@ local function auto_instantiation(args)
 end
 
 local autoinst = {}
-local function setup(userOpts)
+local function setup(opt)
 	local defaultOpts = { cmd = "AutoInst" }
+	local userOpts = opt or {}
 	for key, value in pairs(defaultOpts) do
 		autoinst[key] = userOpts[key] ~= "" and userOpts[key] or value
 	end
