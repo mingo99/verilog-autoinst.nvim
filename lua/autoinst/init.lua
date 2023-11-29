@@ -60,9 +60,9 @@ local function gen_inst(name, params, ports)
 
 	for i, port in ipairs(ports) do
 		if i == #ports then
-			inst_code = inst_code .. string.format(".%s\t(%s));", port, port)
+			inst_code = inst_code .. string.format(".%s(%s));", port, port)
 		else
-			inst_code = inst_code .. string.format(".%s\t(%s),", port, port)
+			inst_code = inst_code .. string.format(".%s(%s),", port, port)
 		end
 	end
 
