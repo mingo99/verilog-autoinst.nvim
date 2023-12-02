@@ -1,12 +1,26 @@
-<h1 align="center">
-    verilog-autoinst.nvim
-</h1>
+<div align="center">
 
-<p align="center">
-    A <i>neovim</i> plugin to instantiate verilog module automatically.
-</p>
+<h1>verilog-autoinst.nvim</h1>
+
+A <i>neovim</i> plugin to instantiate verilog module automatically.
+
+[Getting Started](#getting-started) | [Requirements](#requirements) | [Installation](#installation) | [Features](#features)
+
+</div>
+
+## Getting Started
 
 ![autoinst in action](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/demo.gif)
+
+1. With Telescope
+
+    Run `:AutoInst` to instantiate.
+
+2. With File Path
+
+    Run `:AutoInst <file_path>` to instantiate.
+
+    Note: The `file_path` can be either an absolute path or a relative path to the root directory of the current workspace.
 
 ## Requirements
 
@@ -27,7 +41,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim) in lua
 
 ```
 
-You can register command name that you like, but you need to modify command in keys for lazy-load.
+You can register command name that you like, but you need to modify command in keymap for lazy-load.
 
 ```lua
  {
@@ -40,7 +54,6 @@ You can register command name that you like, but you need to modify command in k
 
 ## Features
 
-- Find and select a _verilog_ files in current workspace with telescope.
 - Generate instantiation template and write in the position where the cursor is located.
 - The template is not formatted and you need to rely on the plug-in you installed for formatting.
 - Only support one module in a file.
