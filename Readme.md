@@ -37,6 +37,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim) in lua
   cmd = "AutoInst",
   keys = { { "<leader>fv", "<cmd>AutoInst<cr>", desc = "Automatic instantiation for verilog" } },
   dependencies = { "nvim-telescope/telescope.nvim" },
+  opts = {}
  },
 
 ```
@@ -47,6 +48,7 @@ You can register command name that you like, but you need to modify command in k
  {
   opts = {
    cmd = "UserComamndName",
+   fmt = true    -- format the instantiation template
   },
  },
 

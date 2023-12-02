@@ -1,6 +1,8 @@
 local Util = require("autoinst.util")
 local TS = vim.treesitter
 
+local autoinst = {}
+
 local function get_query(stext, query_string)
 	local parser = TS.get_string_parser(stext, "verilog")
 	local ok, query = pcall(vim.treesitter.query.parse, parser:lang(), query_string)
@@ -44,27 +46,39 @@ local function get_header_items(file_path)
 end
 
 local function gen_inst(name, params, ports)
-	local inst_code = ""
+	local fmt_ptn = ".%s(%s)"
+	if autoinst.fmt then
+		local width = Util.get_str_maxlen(ports, params.idents) + 2
+		fmt_ptn = string.rep(" ", vim.bo.shiftwidth) .. ".%-" .. width .. "s(%s)"
+	end
+
+	local inst_code = {}
+	local inst_line = ""
 	if #params.idents > 0 then
-		inst_code = inst_code .. name .. " #("
+		table.insert(inst_code, name .. " #(")
 		for i, ident in ipairs(params.idents) do
 			if i == #params.idents then
-				inst_code = inst_code .. string.format(".%s(%s)) u_%s(", ident, params.consts[i], name)
+				inst_line = string.format(fmt_ptn, ident, params.consts[i])
 			else
-				inst_code = inst_code .. string.format(".%s(%s),", ident, params.consts[i])
+				inst_line = string.format(fmt_ptn .. ",", ident, params.consts[i])
 			end
+			table.insert(inst_code, inst_line)
 		end
+		table.insert(inst_code, string.format(") u_%s(", name))
 	else
-		inst_code = inst_code .. string.format("%s u_%s(", name, name)
+		inst_line = string.format("%s u_%s(", name, name)
+		table.insert(inst_code, inst_line)
 	end
 
 	for i, port in ipairs(ports) do
 		if i == #ports then
-			inst_code = inst_code .. string.format(".%s(%s));", port, port)
+			inst_line = string.format(fmt_ptn, port, port)
 		else
-			inst_code = inst_code .. string.format(".%s(%s),", port, port)
+			inst_line = string.format(fmt_ptn .. ",", port, port)
 		end
+		table.insert(inst_code, inst_line)
 	end
+	table.insert(inst_code, ");")
 
 	return inst_code
 end
@@ -83,7 +97,7 @@ local function inst_with_path(path)
 		return
 	end
 	local inst_code = gen_inst(items.name, items.params, items.ports)
-	vim.api.nvim_put({ inst_code }, "", false, true)
+	vim.api.nvim_put(inst_code, "l", false, true)
 end
 
 local function inst_with_telescope()
@@ -98,13 +112,9 @@ local function auto_instantiation(args)
 	end
 end
 
-local autoinst = {}
 local function setup(opt)
-	local defaultOpts = { cmd = "AutoInst" }
-	local userOpts = opt or {}
-	for key, value in pairs(defaultOpts) do
-		autoinst[key] = userOpts[key] ~= "" and userOpts[key] or value
-	end
+	local defaultOpts = { cmd = "AutoInst", fmt = false }
+	autoinst = vim.tbl_extend("force", defaultOpts, opt or {})
 
 	vim.api.nvim_create_user_command(autoinst.cmd, function(opts)
 		auto_instantiation(opts.args)

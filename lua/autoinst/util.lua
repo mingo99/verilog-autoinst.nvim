@@ -70,4 +70,24 @@ function M.telescope(fn_inst)
 	require("telescope.builtin")[builtin](opts)
 end
 
+---@param params string[]
+---@param ports string[]
+---@return number
+function M.get_str_maxlen(params, ports)
+	local max = 0
+	for _, v in ipairs(params) do
+		if #v > max then
+			max = #v
+		end
+	end
+	for _, v in ipairs(ports) do
+		if #v > max then
+			max = #v
+		end
+	end
+
+	print(max)
+	return max
+end
+
 return M
