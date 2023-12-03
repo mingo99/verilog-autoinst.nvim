@@ -10,17 +10,19 @@ A <i>neovim</i> plugin to instantiate verilog module automatically.
 
 ## Getting Started
 
-![autoinst in action](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/demo.gif)
-
 1. With Telescope
 
     Run `:AutoInst` to instantiate.
+    ![autoinst with telescope](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/autoinst-1.gif)
 
 2. With File Path
 
     Run `:AutoInst <file_path>` to instantiate.
+    - Absolute path
+    ![autoinst with relative path](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/autoinst-2.gif)
 
-    Note: The `file_path` can be either an absolute path or a relative path to the root directory of the current workspace.
+    - Relative path to the root directory of the current workspace
+    ![autoinst with absolute path](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/autoinst-3.gif)
 
 ## Requirements
 
@@ -42,7 +44,8 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim) in lua
 
 ```
 
-You can register command name that you like, but you need to modify command in keymap for lazy-load.
+You can set `cmd` to change the command name, but you need to change the key mapping accordingly.
+And you can set `fmt` to format the instantiation template.
 
 ```lua
  {
