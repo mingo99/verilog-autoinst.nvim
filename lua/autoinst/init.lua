@@ -27,8 +27,14 @@ local function get_header_items(file_path)
 	local stext = io.open(file_path):read("*a")
 	local name = get_query(stext, "(module_header (simple_identifier) @module_name)")
 	local params = {
-		idents = get_query(stext, "(param_assignment (parameter_identifier) @param_name )"),
-		consts = get_query(stext, "(param_assignment (constant_param_expression) @param_value)"),
+		idents = get_query(
+			stext,
+			"(parameter_declaration (list_of_param_assignments (param_assignment (parameter_identifier) @param_name )))"
+		),
+		consts = get_query(
+			stext,
+			"(parameter_declaration (list_of_param_assignments (param_assignment (constant_param_expression) @param_value)))"
+		),
 	}
 
 	local ports = get_query(stext, "(ansi_port_declaration (port_identifier) @port_name)")
