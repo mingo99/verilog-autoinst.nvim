@@ -59,6 +59,6 @@ And you can set `fmt` to format the instantiation template.
 ```
 
 > [!NOTE]
-> Generate instantiation template and write in the position where the cursor is located.
-> Only support one module in a file.
-> The matching pattern follows [verilog-2001](https://ieeexplore.ieee.org/document/954909?arnumber=954909) standard.
+> - Generate instantiation template and write in the position where the cursor is located.
+> - Only support one module in a file.
+> - The matching pattern follows [verilog-2001](https://ieeexplore.ieee.org/document/954909?arnumber=954909) standard.
