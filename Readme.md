@@ -18,10 +18,11 @@ A <i>neovim</i> plugin to instantiate verilog module automatically.
 2. With File Path
 
     Run `:AutoInst <file_path>` to instantiate.
-    - Absolute path
+
+    Absolute path:
     ![autoinst with relative path](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/autoinst-2.gif)
 
-    - Relative path to the root directory of the current workspace
+    Relative path to the root directory of the current workspace:
     ![autoinst with absolute path](https://cdn.jsdelivr.net/gh/mingo99/PicBed/img/autoinst-3.gif)
 
 ## Requirements
@@ -60,6 +61,5 @@ And you can set `fmt` to format the instantiation template.
 ## Features
 
 - Generate instantiation template and write in the position where the cursor is located.
-- The template is not formatted and you need to rely on the plug-in you installed for formatting.
 - Only support one module in a file.
 - The matching pattern follows [verilog-2001](https://ieeexplore.ieee.org/document/954909?arnumber=954909) standard.
